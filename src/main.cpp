@@ -1,9 +1,17 @@
+#define BLYNK_AUTH_TOKEN ""
+
 #include <Arduino.h>
 #include "DHT.h"
 #include <Adafruit_BMP085.h>
 #include <Wire.h>
 #include <BH1750.h>
+#include <BlynkSimpleEsp8266.h>
 
+#define BLYNK_PRINT Serial
+#define SSID "My.Macbook(Pro)"
+#define PASS "WirelessFromMac"
+#define SERVER_ADDRESS "158.160.47.150"
+#define SERVER_PORT 8080
 #define DHTPIN 2     // use pins 3, 4, 5, 12, 13 or 14
 #define DHTTYPE DHT11   // DHT 11
 
@@ -11,21 +19,21 @@ DHT dht(DHTPIN, DHTTYPE);
 Adafruit_BMP085 bmp;
 BH1750 lightMeter;
 
-
 void setup() {
     Serial.begin(115200);
     dht.begin();
     Wire.begin();
     lightMeter.begin();
     bmp.begin();
+    Blynk.begin(BLYNK_AUTH_TOKEN, SSID, PASS, SERVER_ADDRESS, SERVER_PORT);
 }
 
-void getHumidity() {
+float getHumidity() {
     float h = dht.readHumidity();
     float t = dht.readTemperature();
     if (isnan(h) || isnan(t)) {
         Serial.println(F("Failed to read from DHT sensor!"));
-        return;
+        return 0;
     }
     // Compute heat index in Celsius (isFahreheit = false)
     float hic = dht.computeHeatIndex(t, h, false);
@@ -38,16 +46,26 @@ void getHumidity() {
     Serial.print(hic);
     Serial.print(F("°C "));
     Serial.println();
+    return h;
 }
 
-void getLight() {
+float getLight() {
     float lux = lightMeter.readLightLevel();
     Serial.print("Light: ");
     Serial.print(lux);
     Serial.println(" lx");
+    return lux;
 }
 
-void getTempAndPressure() {
+float getTemp() {
+    Serial.print("Temperature = ");
+    Serial.print(bmp.readTemperature());
+    Serial.println(" *C");
+    return bmp.readTemperature();
+}
+
+
+float getPressure() {
     Serial.print("Temperature = ");
     Serial.print(bmp.readTemperature());
     Serial.println(" *C");
@@ -75,12 +93,26 @@ void getTempAndPressure() {
     Serial.println(" meters");
 
     Serial.println();
+    return bmp.readPressure();
 }
 
 void loop() {
-    delay(10000);
-    getHumidity();
-    getLight();
-    getTempAndPressure();
+    //getTempAndPressure();
+    Blynk.run();
 }
 
+BLYNK_READ(V2) {
+    Blynk.virtualWrite(V2, getLight());
+}
+
+BLYNK_READ(V3) {
+    Blynk.virtualWrite(V3, getHumidity());
+}
+
+BLYNK_READ(V4) {
+    Blynk.virtualWrite(V4, getTemp());
+}
+
+BLYNK_READ(V5) {
+    Blynk.virtualWrite(V5, getPressure());
+}
