@@ -1,4 +1,4 @@
-#define BLYNK_AUTH_TOKEN ""
+#define BLYNK_AUTH_TOKEN "JblLA6ceU3gmG5W-NkJJDNdSAWwb1_Ht"
 
 #include <Arduino.h>
 #include "DHT.h"
@@ -10,7 +10,7 @@
 #define BLYNK_PRINT Serial
 #define SSID "My.Macbook(Pro)"
 #define PASS "WirelessFromMac"
-#define SERVER_ADDRESS "158.160.47.150"
+#define SERVER_ADDRESS "158.160.125.107"
 #define SERVER_PORT 8080
 #define DHTPIN 2     // use pins 3, 4, 5, 12, 13 or 14
 #define DHTTYPE DHT11   // DHT 11
@@ -115,4 +115,10 @@ BLYNK_READ(V4) {
 
 BLYNK_READ(V5) {
     Blynk.virtualWrite(V5, getPressure());
+}
+
+BLYNK_WRITE(V1) {
+    analogWrite(15, param[0].asInt());
+    analogWrite(12, param[1].asInt());
+    analogWrite(13, param[2].asInt());
 }
