@@ -1,5 +1,5 @@
 #define BLYNK_AUTH_TOKEN "JblLA6ceU3gmG5W-NkJJDNdSAWwb1_Ht"
-
+//pio device monitor -f esp32_exception_decoder -f default -f log2file -f colorize -f debug
 #include <Arduino.h>
 #include "DHT.h"
 #include <Adafruit_BMP085.h>
@@ -8,9 +8,12 @@
 #include <BlynkSimpleEsp8266.h>
 
 #define BLYNK_PRINT Serial
-#define SSID "My.Macbook(Pro)"
-#define PASS "WirelessFromMac"
-#define SERVER_ADDRESS "158.160.125.107"
+#define SSID "NullPointerException"
+#define PASS "1qazZAQ!"
+
+//#define SSID "Village"
+//#define PASS "WirelessFromVillage"
+#define SERVER_ADDRESS "158.160.111.181"
 #define SERVER_PORT 8080
 #define DHTPIN 2     // use pins 3, 4, 5, 12, 13 or 14
 #define DHTTYPE DHT11   // DHT 11
@@ -35,17 +38,18 @@ float getHumidity() {
         Serial.println(F("Failed to read from DHT sensor!"));
         return 0;
     }
-    // Compute heat index in Celsius (isFahreheit = false)
+    /*
+    Compute heat index in Celsius (isFahreheit = false)
     float hic = dht.computeHeatIndex(t, h, false);
     Serial.print(F("Humidity: "));
     Serial.print(h);
-    //Serial.print(F("%  Temperature: "));
-    //Serial.print(t);
-    //Serial.print(F("°C "));
+    Serial.print(F("%  Temperature: "));
+    Serial.print(t);
+    Serial.print(F("°C "));
     Serial.print(F(" Heat index: "));
     Serial.print(hic);
     Serial.print(F("°C "));
-    Serial.println();
+    Serial.println();*/
     return h;
 }
 
@@ -97,7 +101,6 @@ float getPressure() {
 }
 
 void loop() {
-    //getTempAndPressure();
     Blynk.run();
 }
 
