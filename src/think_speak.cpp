@@ -6,7 +6,7 @@
 #include <DHT.h>
 #include <Wire.h>
 
-String api_key = "AYVRVJ8WY75281YI";       // Введите свой ключ Write API записи из ThingSpeak
+String api_key = "AYVRVJ8WY752";       // Введите свой ключ Write API записи из ThingSpeak
 const char *ssid = "NullPointerException"; // Замените на ваш Wi-Fi ssid и ключ wpa2
 const char *pass = "1qazZAQ!";             // Замените на ваш пароль Wi-Fi
 const char *server = "api.thingspeak.com"; // "184.106.153.149" или api.thingspeak.com
